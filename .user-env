@@ -1,10 +1,40 @@
 #!/bin/bash
 
+# # # # # # # #
+# A L I A S E S
+
+# maven
+# INFO mvnc (maven clean) -> mvn clean install -Dmaven.test.skip=false
+alias mvnc='mvn clean install -Dmaven.test.skip=false'
+# INFO mvnt (maven clean test) -> mvn clean test -Dmaven.test.skip=false
+alias mvnt='mvn clean test -Dmaven.test.skip=false'
+
+# git
+# INFO ga (git add) -> git add *
+alias ga='git add *'
+# INFO gc (git commit) -> git commit -m
+alias gc='git commit -m'
+# INFO gsy (git sync) -> git push; git pull;
+alias gsy='git push; git pull;'
+# INFO gfa (git fetch all) -> git fetch --all
+alias gfa='git fetch --all'
+# INFO gf (git fetch) -> git fetch
+alias gf='git fetch'
+
+# # # # # # # # # # # # # # # # # # # # # # # # 
+# E X P O R T S   A N D   P A T H   C O N F I G
+#
+
 # folders
 JAVA_PATH=~/java
 MAVEN_PATH=~/maven
 
 # java
-export JAVA_HOME=$JAVA_PATH/jdk1.8.0_202
+export JAVA_HOME="$JAVA_PATH/jdk1.8.0_202"
 PATH=$JAVA_HOME/bin:$PATH
+export $PATH
+
+# maven
+export MAVEN_HOME="$MAVEN_PATH/apache-maven.3.6.0"
+PATH=$MAVEN_HOME/bin:$PATH
 export $PATH

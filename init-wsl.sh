@@ -6,13 +6,13 @@ MAVEN_PATH=~/maven
 # # # # # # # # #
 # create maven path
 function create_maven_path {
-    mkdir -P $MAVEN_PATH
+    mkdir -P "$MAVEN_PATH"
 }
 
 # # # # # # # # #
 # create java dir for jdk
 function create_java_dir {
-    mkdir -P $JAVA_PATH
+    mkdir -P "$JAVA_PATH"
 }
 
 # # # # # # # # #
@@ -42,26 +42,43 @@ function install_git {
 # installs jdk to ~/java
 # exports JAVA_HOME
 # adds JAVA_HOME to PATH
-function download_and_install_java8_and_add_to_path {
+function download_and_install_java8 {
+    create_java_dir
     ORACLE_JDK_8_U202_URL="https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz"
     # oracle check whether the user has accepted the license agreement
     # when the cookie is not set, oracle denies the download
     ORACLE_ACCEPT_LICENSE_COOKIE='Cookie: oraclelicense=accept-securebackup-cookie'
     wget --no-cache -nc -c --no-check-certificate --header="$ORACLE_ACCEPT_LICENSE_COOKIE" $ORACLE_JDK_8_U202_URL
     # copy tar to java dir
-    cp jdk-8u202-linux-x64.tar.gz $JAVA_PATH
-    tar -xf $JAVA_PATH/jdk-8u202-linux-x64.tar.gz
+    mv jdk-8u202-linux-x64.tar.gz "$JAVA_PATH"
+    tar -xf "$JAVA_PATH/jdk-8u202-linux-x64.tar.gz" -C "$JAVA_PATH/"
+    rm "$JAVA_PATH/jdk-8u202-linux-x64.tar.gz"
 }
 
-function download_install_and_export_maven {
+# downloads maven 3.6.0
+# installs maven to ~/maven
+# exports MAVEN_HOME
+# adds MAVEN_HOME to PATH
+function download_install_maven {
+    create_maven_path
     MAVEN_3_URL="http://mirror.dkd.de/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
     wget --no-cache -nc -c $MAVEN_3_URL
-    cp apache-maven-3.6.0-bin.tar.gz $MAVEN_PATH
-    tar -txf $MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz
-    # export MAVEN_HOME and add to path
-    export MAVEN_HOME=$MAVEN_PATH
-    PATH=$MAVEN_HOME/bin:$PATH
-    export $PATH
+    mv apache-maven-3.6.0-bin.tar.gz "$MAVEN_PATH/"
+    tar -xf "$MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz" -C "$MAVEN_PATH/"
+    rm "$MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz"
+}
+
+# # # # # # # # # # # # # # # # # # # # #
+# download user env and append to bashrc
+function init_env {
+    USR_ENV_GITHUB_URL="https://raw.githubusercontent.com/iodar/linux-scripts/master/.user-env"
+    wget --no-cache -nc -c $USR_ENV_GITHUB_URL -P ~/
+    if [ $(grep -Fxq ". ~/user-env" ~/.bashrc; echo $?) -eq 0 ]; then
+        echo "~/user-env is source in ~/bashrc already; skipping"
+    else
+        echo "# user defined aliases" >> ~/.bashrc
+        echo ". ~/.user-env" >> ~/.bashrc
+    fi
 }
 
 # # # # # # # # #
@@ -70,7 +87,8 @@ function perform_all {
     perform_wsl_upgrade
     install_git
     install_node_js
-    download_and_install_java8_and_add_to_path
+    download_and_install_java8
+    download_install_maven
 }
 
 
