@@ -44,7 +44,7 @@ alias uenv='update_usr_env'
 
 # info
 # grep for '# INFO' at beginning of the line
-alias alias_info='cat ~/.user-env | grep "^# INFO "'
+alias alias_info='cat ~/.user-env | grep "^# INFO"'
 echo "use 'alias_info' to print all aliases"
 
 # # # # # # # # # # # # # # # # # # # # # # # # 
