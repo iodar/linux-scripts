@@ -36,13 +36,13 @@ MAVEN_PATH=~/maven
 
 # java
 export JAVA_HOME="$JAVA_PATH/jdk1.8.0_202"
-PATH="$JAVA_HOME/bin:$PATH"
-export "$PATH"
 
 # maven
 export MAVEN_HOME="$MAVEN_PATH/apache-maven.3.6.0"
-PATH="$MAVEN_HOME/bin:$PATH"
-export "$PATH"
+
+# set Path
+PATH="$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH"
+export PATH
 
 # docker
 # export DOCKER_HOST to allow wsl to access
