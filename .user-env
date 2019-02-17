@@ -4,12 +4,14 @@
 # A L I A S E S
 
 # maven
+# INFO maven aliases
 # INFO mvnc (maven clean) -> mvn clean install -Dmaven.test.skip=false
 alias mvnc='mvn clean install -Dmaven.test.skip=false'
 # INFO mvnt (maven clean test) -> mvn clean test -Dmaven.test.skip=false
 alias mvnt='mvn clean test -Dmaven.test.skip=false'
 
 # git
+# INFO Git aliases
 # INFO ga (git add) -> git add *
 alias ga='git add *'
 # INFO gc (git commit) -> git commit -m
@@ -22,7 +24,7 @@ alias gfa='git fetch --all'
 alias gf='git fetch'
 
 # info
-alias alias_info='cat ~/.user-env | grep # INFO'
+alias alias_info='cat ~/.user-env | grep "# INFO "'
 
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # E X P O R T S   A N D   P A T H   C O N F I G
