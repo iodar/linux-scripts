@@ -119,6 +119,13 @@ function download_install_maven {
     rm "$MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz"
 }
 
+# install postgres common and postgres client
+function install_postgres_client {
+    apt update
+    apt install -y postgresql-client-common
+    apt install -y postgresql-client-10
+}
+
 # # # # # # # # # # # # # # # # # # # # #
 # download user env and append to bashrc
 function init_env {
@@ -166,6 +173,8 @@ function print_all_versions {
     echo -e "$(git --version)\n"
     # java
     echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
+    # postgres client
+    echo -e "postgres -> $(psql --version)\n"
     # instructions for user
     echo -e "\nLog out and in again to apply all changes; env vars are not active yet\n"
 }
@@ -181,6 +190,7 @@ function perform_all {
     download_install_maven
     install_docker
     install_docker_compose
+    install_postgres_client
     init_env
     activate_color_support_in_terminal
     print_all_versions
