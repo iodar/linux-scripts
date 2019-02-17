@@ -23,7 +23,7 @@ A short time after that it will ask you for a username and password.
 ![Linux asking for user and password after install](resources/ubuntu-1604-asking-for-user-name.PNG)
 
 Instead of following that instruction hit `CTRL + C` to cancel the command.
-Open a new powershell window and run the following command and assure that you are in `<systemDrive>:/Users/<yourUser>`.
+Open a new powershell window and assure that you are in `<systemDrive>:/Users/<yourUser>`.
 Then run the following command to set `root` as the default user:
 
 ```powershell
