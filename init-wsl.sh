@@ -139,7 +139,7 @@ function change_color_option_in_bashrc {
     # enable by getting rid of the comment prefix
     COLOR_SUPPORT_ON_STRING="force_color_prompt=yes"
     
-    cat ~/.bashrc | sed "s/$COLOR_SUPPORT_SEARCH_STRING/$COLOR_SUPPORT_ON_STRING" > ~/.bashrc_new
+    cat ~/.bashrc | sed "s/$COLOR_SUPPORT_SEARCH_STRING/$COLOR_SUPPORT_ON_STRING/" > ~/.bashrc_new
     # remove old bashrc and rename new one
     rm ~/.bashrc
     mv ~/.bashrc_new ~/.bashrc
@@ -157,16 +157,15 @@ function activate_color_support_in_terminal {
 
 # prints versions of the all the installed software
 function print_all_versions {
+    echo -e "\n\n####### VERSIONS OF INSTALLED SOFTWARE #######\n\n"
     # node
-    echo -e "$(node -v)\n"
+    echo -e "node.js -> $(node -v)\n"
     # npm
-    echo -e "$(npm -v)\n"
+    echo -e "npm -> $(npm -v)\n"
     # git
     echo -e "$(git --version)\n"
     # java
     echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
-    # maven
-    echo -e "$($MAVEN_PATH/apache-maven-3.6.0/bin/mvn --version)\n"
 
 }
 
