@@ -74,6 +74,38 @@ function download_and_install_java8 {
     rm "$JAVA_PATH/jdk-8u202-linux-x64.tar.gz"
 }
 
+# install latest release of docker CE
+function install_docker {
+    # Update the apt package index:
+    apt-get update
+    # Install packages to allow apt to use a repository over HTTPS:
+    apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+    # Add Docker’s official GPG key
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    # set up the stable repository
+    add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+    # update package index
+    sudo apt-get update
+    # install docker
+    apt-get install docker-ce docker-ce-cli containerd.io
+}
+
+# install latests release of docker-compose
+function install_docker_compose {
+    # Run this command to download the latest version of Docker Compose:
+    curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    # Apply executable permissions to the binary:
+    chmod +x /usr/local/bin/docker-compose
+}
+
 # downloads maven 3.6.0
 # installs maven to ~/maven
 # exports MAVEN_HOME
@@ -100,6 +132,21 @@ function init_env {
     fi
 }
 
+# prints versions of the all the installed software
+function print_all_versions {
+    # node
+    echo -e "$(node -v)\n"
+    # npm
+    echo -e "$(npm -v)\n"
+    # git
+    echo -e "$(git --version)\n"
+    # java
+    echo -e "$(java -version)\n"
+    # maven
+    echo -e "$(mvn --version)\n"
+
+}
+
 # # # # # # # # #
 # perform all the functions above
 function perform_all {
@@ -109,7 +156,10 @@ function perform_all {
     install_node_js
     download_and_install_java8
     download_install_maven
+    install_docker
+    install_docker_compose
     init_env
+    print_all_versions
     clean_up_after_install
 }
 

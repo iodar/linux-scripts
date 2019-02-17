@@ -41,3 +41,8 @@ export $PATH
 # export MAVEN_HOME="$MAVEN_PATH/apache-maven.3.6.0"
 PATH=$MAVEN_HOME/bin:$PATH
 export $PATH
+
+# docker
+# export DOCKER_HOST to allow wsl to access
+# docker registry
+export DOCKER_HOST=localhost:2375
