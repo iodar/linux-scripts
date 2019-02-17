@@ -1,18 +1,19 @@
 # Installing Windows Subsystem for Linux
 ## Preparing Windows for the installation
 First of all the windows feature for the linux subsystem must be turned on.
-Turn this on by running the following line in an elevated powershell:
+Turn it on by running the following line in an elevated powershell:
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 ```
-In the dialogue type 'A' to enable the feature. Your PC will restart after this.
+In the dialogue type `A` to enable the feature. Your PC will restart after this.
 ## Install your favourite linux distribution
-Now you can open the Microsoft-Store and install your favourite linux:
-For example install Ubuntu 16.04 LTS.
+Now you can open the Microsoft-Store and install your favourite linux.
+In this example we install Ubuntu 16.04 LTS. Open the Windows Store an search for
+`Ubuntu`. Click on `Ubuntu 16.04 LTS`.
 
 ![Ubuntu 16.04 LTS in Windows Store](resources/win-store-ubuntu.PNG)
 
-Hit 'Install' to install the app on your computer. After it is installed you can start it by hitting 'Start'.
+Hit `Install` to install the app on your computer. After it is installed you can start it by hitting `Start`.
 
 ![Ubuntu 16.04 LTS installed in Windows Store](resources/win-store-ubuntu-installed.PNG)
 
