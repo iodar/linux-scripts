@@ -5,7 +5,7 @@
 function update_usr_env {
     USR_ENV_URL="https://github.com/iodar/linux-scripts/blob/master/.user-env"
     rm ~/.user-env
-    wget --no-cache -nc -c $USR_ENV_URL -P ~/.user-env
+    wget --no-cache -nc -c $USR_ENV_URL -P ~/
 }
 
 # # # # # # # #
