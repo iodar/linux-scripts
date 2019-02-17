@@ -1,18 +1,30 @@
 #!/bin/bash
 
+# # # # # # 
+# FUNCTIONS
+function update_usr_env {
+    USR_ENV_URL="https://github.com/iodar/linux-scripts/blob/master/.user-env"
+    rm ~/.user-env
+    wget --no-cache -nc -c $USR_ENV_URL -P ~/.user-env
+}
+
 # # # # # # # #
 # A L I A S E S
 
 # maven
+# INFO
 # INFO maven aliases
+# INFO
 # INFO mvnc (maven clean) -> mvn clean install -Dmaven.test.skip=false
 alias mvnc='mvn clean install -Dmaven.test.skip=false'
 # INFO mvnt (maven clean test) -> mvn clean test -Dmaven.test.skip=false
 alias mvnt='mvn clean test -Dmaven.test.skip=false'
 
 # git
+# INFO
 # INFO Git aliases
 # INFO ga (git add) -> git add *
+# INFO
 alias ga='git add *'
 # INFO gc (git commit) -> git commit -m
 alias gc='git commit -m'
@@ -23,8 +35,17 @@ alias gfa='git fetch --all'
 # INFO gf (git fetch) -> git fetch
 alias gf='git fetch'
 
+# functions
+# INFO
+# INFO user functions
+# INFO
+# INFO uenv (update usr environment) -> update_usr_env
+alias uenv='update_usr_env'
+
 # info
-alias alias_info='cat ~/.user-env | grep "# INFO "'
+# grep for '# INFO' at beginning of the line
+alias alias_info='cat ~/.user-env | grep "^# INFO "'
+echo "use 'alias_info' to print all aliases"
 
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # E X P O R T S   A N D   P A T H   C O N F I G
