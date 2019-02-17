@@ -53,7 +53,7 @@ function install_node_js {
 function install_git {
     echo -e "\n" | add-apt-repository ppa:git-core/ppa
     apt update
-    apt install git -y
+    apt install -y git
 }
 
 # # # # # # # # #
@@ -79,7 +79,7 @@ function install_docker {
     # Update the apt package index:
     apt-get update
     # Install packages to allow apt to use a repository over HTTPS:
-    apt-get install \
+    apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -95,7 +95,7 @@ function install_docker {
     # update package index
     sudo apt-get update
     # install docker
-    apt-get install docker-ce docker-ce-cli containerd.io
+    apt-get install -y docker-ce docker-ce-cli containerd.io
 }
 
 # install latests release of docker-compose
@@ -141,9 +141,9 @@ function print_all_versions {
     # git
     echo -e "$(git --version)\n"
     # java
-    echo -e "$(java -version)\n"
+    echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
     # maven
-    echo -e "$(mvn --version)\n"
+    echo -e "$($MAVEN_PATH/apache-maven-3.6.0/bin/mvn --version)\n"
 
 }
 
