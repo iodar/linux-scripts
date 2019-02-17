@@ -14,17 +14,17 @@ function update_usr_env {
 # maven
 # INFO
 # INFO maven aliases
-# INFO
+# INFO -------------
 # INFO mvnc (maven clean) -> mvn clean install -Dmaven.test.skip=false
 alias mvnc='mvn clean install -Dmaven.test.skip=false'
 # INFO mvnt (maven clean test) -> mvn clean test -Dmaven.test.skip=false
 alias mvnt='mvn clean test -Dmaven.test.skip=false'
 
 # git
-# INFO
+# INFO 
 # INFO Git aliases
+# INFO -----------
 # INFO ga (git add) -> git add *
-# INFO
 alias ga='git add *'
 # INFO gc (git commit) -> git commit -m
 alias gc='git commit -m'
@@ -38,7 +38,7 @@ alias gf='git fetch'
 # functions
 # INFO
 # INFO user functions
-# INFO
+# INFO --------------
 # INFO uenv (update usr environment) -> update_usr_env
 alias uenv='update_usr_env'
 
