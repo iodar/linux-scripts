@@ -21,6 +21,9 @@ alias gfa='git fetch --all'
 # INFO gf (git fetch) -> git fetch
 alias gf='git fetch'
 
+# info
+alias alias_info='cat ~/.user-env | grep # INFO'
+
 # # # # # # # # # # # # # # # # # # # # # # # # 
 # E X P O R T S   A N D   P A T H   C O N F I G
 #
@@ -35,6 +38,6 @@ PATH=$JAVA_HOME/bin:$PATH
 export $PATH
 
 # maven
-export MAVEN_HOME="$MAVEN_PATH/apache-maven.3.6.0"
+# export MAVEN_HOME="$MAVEN_PATH/apache-maven.3.6.0"
 PATH=$MAVEN_HOME/bin:$PATH
 export $PATH
