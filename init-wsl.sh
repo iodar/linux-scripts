@@ -166,7 +166,8 @@ function print_all_versions {
     echo -e "$(git --version)\n"
     # java
     echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
-
+    # instructions for user
+    echo -e "\nLog out and in again to apply all changes; env vars are not active yet\n"
 }
 
 # # # # # # # # #
