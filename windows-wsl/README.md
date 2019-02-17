@@ -17,7 +17,8 @@ Hit `Install` to install the app on your computer. After it is installed you can
 
 ![Ubuntu 16.04 LTS installed in Windows Store](resources/win-store-ubuntu-installed.PNG)
 
-After you have started Ubuntu it will ask you for a username and password.
+After you have started Ubuntu it will take some time to prepare the installation.
+A short time after that it will ask you for a username and password.
 
 ![Linux asking for user and password after install](resources/ubuntu-1604-asking-for-user-name.PNG)
 
