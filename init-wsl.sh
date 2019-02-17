@@ -134,7 +134,7 @@ function init_env {
 
 function change_colour_option_in_bashrc {
     # standard for root
-    # color support option is commented out
+    # colour support option is commented out
     COLOUR_SUPPORT_SEARCH_STRING="#force_color_prompt=yes"
     # enable by getting rid of the comment prefix
     COLOUR_SUPPORT_ON_STRING="force_color_prompt=yes"
@@ -145,7 +145,7 @@ function change_colour_option_in_bashrc {
     mv ~/.bashrc_new ~/.bashrc
 }
 
-# enable color support on terminal
+# enable colour support on terminal
 function activate_color_support_in_terminal {
     # greps wih fixed string in bashrc whether force_color_prompt
     if [ $(grep -Fxq "force_color_prompt=yes" ~/.bashrc; echo $?) -eq 0 ]; then
