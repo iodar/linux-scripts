@@ -7,7 +7,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 ```
 In the dialogue type `A` to enable the feature. Your PC will restart after this.
 ## Install your favourite linux distribution
-Now you can open the Microsoft-Store and install your favourite linux.
+Now you can open the Microsoft Store and install your favourite linux.
 In this example we install Ubuntu 16.04 LTS. Open the Windows Store an search for
 `Ubuntu`. Click on `Ubuntu 16.04 LTS`.
 
