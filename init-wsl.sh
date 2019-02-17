@@ -132,6 +132,29 @@ function init_env {
     fi
 }
 
+function change_color_option_in_bashrc {
+    # standard for root
+    # color support option is commented out
+    COLOR_SUPPORT_SEARCH_STRING="#force_color_prompt=yes"
+    # enable by getting rid of the comment prefix
+    COLOR_SUPPORT_ON_STRING="force_color_prompt=yes"
+    
+    cat ~/.bashrc | sed "s/$COLOR_SUPPORT_SEARCH_STRING/$COLOR_SUPPORT_ON_STRING" > ~/.bashrc_new
+    # remove old bashrc and rename new one
+    rm ~/.bashrc
+    mv ~/.bashrc_new ~/.bashrc
+}
+
+# enable color support on terminal
+function activate_color_support_in_terminal {
+    # greps wih fixed string in bashrc whether force_color_prompt
+    if [ $(grep -Fxq "force_color_prompt=yes" ~/.bashrc; echo $?) -eq 0 ]; then
+        echo "colored terminal support already enabled in ~/.bashrc; skipping"
+    else
+        change_color_option_in_bashrc
+    fi
+}
+
 # prints versions of the all the installed software
 function print_all_versions {
     # node
@@ -159,6 +182,7 @@ function perform_all {
     install_docker
     install_docker_compose
     init_env
+    activate_color_support_in_terminal
     print_all_versions
     clean_up_after_install
 }
