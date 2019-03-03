@@ -102,13 +102,9 @@ function check_for_cmd_line_options {
 function extract_cmd_line_options {
     install_options=$1
     
-    # check for empty array of install options
-    # print error and exit
-    # TODO: this check is not working right now
-
-    # echo ${#install_options[@]}
-    # echo ${install_options[1]}
-    if [[ ${#install_options[@]} -eq 0 ]]; then
+    # check for empty string of install options
+    # if empty then there are no install flags -> throw error
+    if [[ ${#install_options} -eq 0 ]]; then
         echo -e "ERROR: No install flags specified after equals sign. See usage.\n"
     else
         # expands var and replaces ',' with ' ' and
