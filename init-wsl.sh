@@ -1,7 +1,9 @@
 #!/bin/bash
 
-JAVA_PATH=~/java
-MAVEN_PATH=~/maven
+SOFTWARE_PATH=~/Software
+JAVA_PATH="$SOFTWARE/java"
+MAVEN_PATH="$SOFTWARE/maven"
+NODE_PATH="$SOFTWARE/node"
 TMP_DIR=~/tmp_dir
 
 # # # # # # # # # # # # # # # # # # # # # # #
@@ -18,7 +20,7 @@ function clear_tmp_dir {
 
 function clean_up_after_install {
     if [ -d "$TMP_DIR" ]; then
-        rm -r $TMP_DIR
+        rm -r "$TMP_DIR"
     fi
 }
 
@@ -44,14 +46,14 @@ function perform_wsl_upgrade {
 # # # # # # # # #
 # install node js v11 (and npm)
 function install_node_js {
-    curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     sudo apt-get install -y nodejs
 }
 
 # # # # # # # # #
 # install git
 function install_git {
-    echo -e "\n" | add-apt-repository ppa:git-core/ppa
+    add-apt-repository -y ppa:git-core/ppa
     apt update
     apt install -y git
 }
@@ -63,15 +65,20 @@ function install_git {
 # adds JAVA_HOME to PATH
 function download_and_install_java8 {
     create_java_dir
-    ORACLE_JDK_8_U202_URL="https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jdk-8u202-linux-x64.tar.gz"
-    # oracle check whether the user has accepted the license agreement
-    # when the cookie is not set, oracle denies the download
-    ORACLE_ACCEPT_LICENSE_COOKIE='Cookie: oraclelicense=accept-securebackup-cookie'
-    wget --no-cache -nc -c --no-check-certificate --header="$ORACLE_ACCEPT_LICENSE_COOKIE" $ORACLE_JDK_8_U202_URL -P "$TMP_DIR/"
+    OPEN_JDK_11_URL="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz"
+    OPEN_JDK_FILENAME=$(echo -n $OPEN_JDK_11_URL | grep -oP '[a-z0-9_\-\.]+.tar.gz$')
+    # download openjdk
+    curl "$OPEN_JDK_11_URL" -o "$TMP_DIR/$OPEN_JDK_FILENAME"
     # copy tar to java dir
-    mv "$TMP_DIR/jdk-8u202-linux-x64.tar.gz" "$JAVA_PATH"
-    tar -xf "$JAVA_PATH/jdk-8u202-linux-x64.tar.gz" -C "$JAVA_PATH/"
-    rm "$JAVA_PATH/jdk-8u202-linux-x64.tar.gz"
+    mv "$TMP_DIR/$OPEN_JDK_FILENAME" "$JAVA_PATH"
+    # todo: 2020-05-20 iodar write file name to global variable
+    # get filename of jdk dir inside the archive
+    JAVA_JDK_DIR_NAME=$(tar -tf "$JAVA_PATH/$OPEN_JDK_FILENAME" | head -n 1 | grep -oP '^[a-z0-9\-\._]+')
+    # extract files from archive
+    tar -xf "$JAVA_PATH/$OPEN_JDK_FILENAME" -C "$JAVA_PATH/"
+    # remove archive
+    rm "$JAVA_PATH/$OPEN_JDK_FILENAME"
+    # todo: 2020-05-20 iodar append bin path of jdk to profile / env
 }
 
 # install latest release of docker CE
@@ -172,6 +179,7 @@ function print_all_versions {
     # git
     echo -e "$(git --version)\n"
     # java
+    # todo: 2020-05-20 iodar add command to extract java version: java -version 2>&1 | head -n 1 | awk '{print $3}' | grep -oP [0-9\.]+
     echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
     # postgres client
     echo -e "postgres -> $(psql --version)\n"
