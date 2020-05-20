@@ -38,13 +38,14 @@ function create_java_dir {
 
 # # # # # # # # #
 # update wsl and perform dist upgrade
+# todo: 2020-05-21 iodar check if still needed
 function perform_wsl_upgrade {
     apt update
     apt dist-upgrade -y
 }
 
 # # # # # # # # #
-# install node js v11 (and npm)
+# install node js v12 (and npm)
 function install_node_js {
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     sudo apt-get install -y nodejs
@@ -63,7 +64,9 @@ function install_git {
 # installs jdk to ~/java
 # exports JAVA_HOME
 # adds JAVA_HOME to PATH
-function download_and_install_java8 {
+# todo: 2020-05-21 iodar global java path
+# todo: 2020-05-21 iodar storing PATH in user env oder profile / bashrc
+function download_and_install_java11 {
     create_java_dir
     OPEN_JDK_11_URL="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz"
     OPEN_JDK_FILENAME=$(echo -n $OPEN_JDK_11_URL | grep -oP '[a-z0-9_\-\.]+.tar.gz$')
@@ -95,15 +98,20 @@ function install_docker {
     gnupg-agent \
     software-properties-common
     # Add Docker's official GPG key
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" | sudo apt-key add -
 
     # set up the stable repository
+    # @see https://download.docker.com/linux/ubuntu/dists/
     # map for translation of codenames from linux mint to ubuntu
-    MINT_TO_UBUNTU_MAP=([tricia]='bionic' [ulyana]='focal')
+    MINT_TO_UBUNTU_MAP=([19]='bionic' [20]='focal')
     # if distro is 'Linux Mint' then use bionic, else use the ubuntu codename
     if [ $(grep -oq "Tricia" /etc/issue; echo $?) -eq 0 ]; then
-        # get mint codename and map to ubuntu codename
-        MINT_CODE_NAME=${MINT_TO_UBUNTU_MAP[$(lsb_release -cs)]}
+        # extract mint major release version
+        LSB_RELEASE=$(lsb_release -rs)
+        LSB_MAJOR_RELEASE=${LSB_RELEASE//.*/}
+        # map to ubuntu codename
+        MINT_CODE_NAME=${MINT_TO_UBUNTU_MAP[LSB_MAJOR_RELEASE]}
+        # add repo
         add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
         $MINT_CODE_NAME \
@@ -116,16 +124,18 @@ function install_docker {
     fi
 
     # update package index
-    sudo apt-get update
+    apt update
     # install docker
-    apt-get install -y docker-ce docker-ce-cli containerd.io
+    apt install -y docker-ce docker-ce-cli containerd.io
 }
 
 # install latests release of docker-compose
 function install_docker_compose {
-    # Run this command to download the latest version of Docker Compose:
-    curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    # Apply executable permissions to the binary:
+    # run this command to download the latest version of docker compose
+    curl -L \
+    "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o \
+    /usr/local/bin/docker-compose
+    # apply executable permissions to the binary:
     chmod +x /usr/local/bin/docker-compose
 }
 
@@ -133,20 +143,17 @@ function install_docker_compose {
 # installs maven to ~/maven
 # exports MAVEN_HOME
 # adds MAVEN_HOME to PATH
+# todo: 2020-05-21 maven path must be stored globally
 function download_install_maven {
     create_maven_dir
-    MAVEN_3_URL="http://mirror.dkd.de/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz"
-    wget --no-cache -nc -c $MAVEN_3_URL -P "$TMP_DIR/"
-    mv "$TMP_DIR/apache-maven-3.6.0-bin.tar.gz" "$MAVEN_PATH/"
-    tar -xf "$MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz" -C "$MAVEN_PATH/"
-    rm "$MAVEN_PATH/apache-maven-3.6.0-bin.tar.gz"
-}
+    MAVEN_3_URL="http://apache.mirror.iphh.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz"
+    MAVEN_ARCHIVE_NAME=$(echo -n $MAVEN_3_URL | grep -P '[\w\-\.]+.tar.gz$')
+    curl $MAVEN_3_URL -o "$TMP_DIR/$MAVEN_ARCHIVE_NAME"
 
-# install postgres common and postgres client
-function install_postgres_client {
-    apt update
-    apt install -y postgresql-client-common
-    apt install -y postgresql-client-10
+    MAVEN_DIR_NAME=$(tar -tf "$TMP_DIR/$MAVEN_ARCHIVE_NAME" | head -n 1 | grep -oP '^[\w\-\.]+')
+    mv "$TMP_DIR/$MAVEN_DIR_NAME" "$MAVEN_PATH/"
+    tar -xf "$MAVEN_PATH/$MAVEN_ARCHIVE_NAME" -C "$MAVEN_PATH/$MAVEN_DIR_NAME"
+    rm "$MAVEN_PATH/$MAVEN_ARCHIVE_NAME"
 }
 
 # # # # # # # # # # # # # # # # # # # # #
@@ -162,6 +169,8 @@ function init_env {
     fi
 }
 
+# todo: 2020-05-21 iodar only activate this, if current release is not mint
+# todo: 2020-05-21 iodar search on the internet, when this options needs to be activated
 function change_colour_option_in_bashrc {
     # standard for root
     # colour support option is commented out
@@ -186,6 +195,7 @@ function activate_color_support_in_terminal {
 }
 
 # prints versions of the all the installed software
+# todo: 2020-05-21 iodar fix java version
 function print_all_versions {
     echo -e "\n\n####### VERSIONS OF INSTALLED SOFTWARE #######\n\n"
     # node
@@ -193,9 +203,10 @@ function print_all_versions {
     # npm
     echo -e "npm -> $(npm -v)\n"
     # git
-    echo -e "$(git --version)\n"
+    echo -e "git -> $(git --version | grep -oP "[\d\.]+")\n"
     # java
-    # todo: 2020-05-20 iodar add command to extract java version: java -version 2>&1 | head -n 1 | awk '{print $3}' | grep -oP [0-9\.]+
+    # todo: 2020-05-20 iodar add command to extract java version: 
+    # java -version 2>&1 | head -n 1 | awk '{print $3}' | grep -oP [0-9\.]+
     echo -e "$($JAVA_PATH/jdk1.8.0_202/bin/java -version)"
     # postgres client
     echo -e "postgres -> $(psql --version)\n"
@@ -210,7 +221,7 @@ function perform_all {
     perform_wsl_upgrade
     install_git
     install_node_js
-    download_and_install_java8
+    download_and_install_java11
     download_install_maven
     install_docker
     install_docker_compose
