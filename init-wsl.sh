@@ -107,8 +107,7 @@ function install_docker {
     # if distro is 'Linux Mint' then use bionic, else use the ubuntu codename
     if [ $(grep -oq "Tricia" /etc/issue; echo $?) -eq 0 ]; then
         # extract mint major release version
-        LSB_RELEASE=$(lsb_release -rs)
-        LSB_MAJOR_RELEASE=${LSB_RELEASE//.*/}
+        LSB_MAJOR_RELEASE=$(sed 's|\..*||' <(lsb_release -rs))
         # map to ubuntu codename
         MINT_CODE_NAME=${MINT_TO_UBUNTU_MAP[LSB_MAJOR_RELEASE]}
         # add repo
