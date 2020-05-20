@@ -83,10 +83,12 @@ function download_and_install_java8 {
 
 # install latest release of docker CE
 function install_docker {
+    # remove older version of docker
+    apt-get remove docker docker-engine docker.io containerd runc
     # Update the apt package index:
     apt-get update
     # Install packages to allow apt to use a repository over HTTPS:
-    apt-get install -y \
+    apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -94,11 +96,25 @@ function install_docker {
     software-properties-common
     # Add Docker's official GPG key
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
     # set up the stable repository
-    add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) \
-    stable"
+    # map for translation of codenames from linux mint to ubuntu
+    MINT_TO_UBUNTU_MAP=([tricia]='bionic' [ulyana]='focal')
+    # if distro is 'Linux Mint' then use bionic, else use the ubuntu codename
+    if [ $(grep -oq "Tricia" /etc/issue; echo $?) -eq 0 ]; then
+        # get mint codename and map to ubuntu codename
+        MINT_CODE_NAME=${MINT_TO_UBUNTU_MAP[$(lsb_release -cs)]}
+        add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+        $MINT_CODE_NAME \
+        stable"
+    else
+        add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+    fi
+
     # update package index
     sudo apt-get update
     # install docker
