@@ -105,7 +105,7 @@ function install_docker {
     # map for translation of codenames from linux mint to ubuntu
     MINT_TO_UBUNTU_MAP=([19]='bionic' [20]='focal')
     # if distro is 'Linux Mint' then use bionic, else use the ubuntu codename
-    if [ $(grep -oq "Tricia" /etc/issue; echo $?) -eq 0 ]; then
+    if [ $(grep -oq "Mint" /etc/issue; echo $?) -eq 0 ]; then
         # extract mint major release version
         LSB_MAJOR_RELEASE=$(sed 's|\..*||' <(lsb_release -rs))
         # map to ubuntu codename
